@@ -1,7 +1,7 @@
 # Mini Aplicación Bancaria
 
 Este es un proyecto de una mini aplicación bancaria desarrollada como parte de un laboratorio de capacitación en tecnologías Java y Spring.
-Corresponde al laboratorio 1 del modulo IV de la capacitación en desarrollo backend del banco BBVA 2023.
+Corresponde al laboratorio 2 del modulo V de la capacitación en desarrollo backend del banco BBVA 2023.
 
 ## Descripción
 
