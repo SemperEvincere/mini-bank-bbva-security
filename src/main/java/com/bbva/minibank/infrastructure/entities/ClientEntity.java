@@ -61,5 +61,9 @@ public class ClientEntity {
   private LocalDate updatedAt;
   
   private Boolean isActive;
+  
+  @OneToOne
+  @JoinColumn(name = "user_id", referencedColumnName = "id")
+  private UserEntity user;
 
 }

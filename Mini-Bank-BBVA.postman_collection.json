@@ -12,11 +12,21 @@
 				{
 					"name": "create Client",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"lastName\": \"DOS\",\r\n    \"firstName\": \"CLIENTE\",\r\n    \"email\": \"cliente.dos@gmail.com\",\r\n    \"phone\": \"5548484656\",\r\n    \"address\": \"otra direccion\"\r\n}",
+							"raw": "{\r\n    \"lastName\": \"SEIS\",\r\n    \"firstName\": \"CLIENTE\",\r\n    \"email\": \"cliente.seis@gmail.com\",\r\n    \"phone\": \"5548484656\",\r\n    \"address\": \"otra direccion\",\r\n   \"userId\" : \"e3cb4256-427b-40ff-bb9d-bb9fc46f292a\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -41,6 +51,16 @@
 				{
 					"name": "getAll Client",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZW1wZXIiLCJpYXQiOjE2ODcyNjc2ODUsImV4cCI6MTY4NzM1NDA4NX0.3-reCMLcO5BgzpRhGpLItyv-rg8mX3H72FPcJ7ShmKw",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -427,6 +447,75 @@
 							"path": [
 								"transactions",
 								"a5b7ad29-6db7-4704-9e6d-774bef823e99"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\" : \"semper\",\r\n    \"password\" : \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/user/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createUser",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" : \"saraza@gmail\",\r\n    \"username\" : \"evincere\",\r\n    \"password\" : \"1234\",\r\n    \"roles\" : [\"USER\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/user/createUser",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"user",
+								"createUser"
 							]
 						}
 					},

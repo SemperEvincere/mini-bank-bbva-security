@@ -39,7 +39,7 @@ public class ClientRepositoryImpl implements IClientRepository {
                       accountFindUseCase.findByAccountNumber(accountNumber)))
                   .toList();
         clientEntity.setAccounts(new HashSet<>(accountEntities));
-
+        
         clientSpringRepository.save(clientEntity);
 
         return clientEntityMapper.entityToDomain(clientEntity);

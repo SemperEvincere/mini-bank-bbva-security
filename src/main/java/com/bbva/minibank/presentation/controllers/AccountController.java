@@ -60,7 +60,6 @@ public class AccountController {
             .findFirst();
 
     if (accountOptional.isPresent()) {
-      // todo: debe poder crear una cuenta aunque sea cotitular de otra cuenta
       return ResponseEntity.badRequest().body("Account already exists");
     }
 

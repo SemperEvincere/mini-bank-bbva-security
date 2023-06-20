@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 @RequiredArgsConstructor
@@ -16,5 +17,16 @@ public class UserRepositoryImpl implements IUserRepository {
 	@Override
 	public Optional<UserEntity> findByUsername(String username) {
 		return userSpringRepository.findByUsername(username);
+	}
+	
+	@Override
+	public void save(UserEntity userEntity) {
+		userSpringRepository.save(userEntity);
+	}
+	
+	@Override
+	public UserEntity findUserById(UUID userId) {
+		return userSpringRepository.findById(userId)
+		                           .orElseThrow(() -> new RuntimeException("El usuario no existe."));
 	}
 }

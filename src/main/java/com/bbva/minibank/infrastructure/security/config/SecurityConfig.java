@@ -4,6 +4,7 @@ import com.bbva.minibank.application.services.UserDetailsServiceImpl;
 import com.bbva.minibank.infrastructure.security.filters.JwtAuthenticationFilter;
 import com.bbva.minibank.infrastructure.security.filters.JwtAuthorizationFilter;
 import com.bbva.minibank.infrastructure.security.utils.JwtUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +14,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -20,16 +22,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 	
-	@Autowired
-	JwtUtils jwtUtils;
-	
-	@Autowired
-	UserDetailsServiceImpl userDetailsService;
-	
-	@Autowired
-	JwtAuthorizationFilter authorizationFilter;
+	private final JwtUtils jwtUtils;
+	private final UserDetailsService userDetailsService;
+	private final JwtAuthorizationFilter authorizationFilter;
 	
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity,
@@ -37,19 +35,19 @@ public class SecurityConfig {
 		
 		JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtUtils);
 		jwtAuthenticationFilter.setAuthenticationManager(authenticationManager);
-		jwtAuthenticationFilter.setFilterProcessesUrl("/login");
+		jwtAuthenticationFilter.setFilterProcessesUrl("/user/login");
 		
 		return httpSecurity
 				       .csrf(AbstractHttpConfigurer::disable)
 				       .authorizeHttpRequests(auth -> {
-					       auth.requestMatchers("/hello")
+					       auth.requestMatchers("/user/login")
 					           .permitAll();
-					       auth.requestMatchers("/accessUser")
-					           .hasRole("USER");
-					       auth.requestMatchers("/accessAdmin")
+					       auth.requestMatchers("/user/**")
 					           .hasRole("ADMIN");
-					       auth.requestMatchers("/accessInvited")
-					           .hasRole("INVITED");
+					       auth.requestMatchers("/account/**")
+					           .hasRole("ADMIN");
+								 auth.requestMatchers("/transactions/**")
+					           .hasRole("USER");
 					       auth.anyRequest()
 					           .authenticated();
 				       })

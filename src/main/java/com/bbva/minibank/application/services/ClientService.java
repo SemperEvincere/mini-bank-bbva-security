@@ -5,6 +5,8 @@ import com.bbva.minibank.application.usecases.client.*;
 import com.bbva.minibank.domain.models.Account;
 import com.bbva.minibank.domain.models.Client;
 import com.bbva.minibank.domain.models.Transaction;
+import com.bbva.minibank.infrastructure.entities.UserEntity;
+import com.bbva.minibank.infrastructure.mappers.ClientEntityMapper;
 import com.bbva.minibank.presentation.mappers.ClientPresentationMapper;
 import com.bbva.minibank.presentation.request.client.ClientCreateRequest;
 import lombok.RequiredArgsConstructor;
@@ -25,17 +27,22 @@ public class ClientService
 
     private final IClientRepository clientRepository;
     private final ClientPresentationMapper clientMapper;
+    private final UserService userService;
+    private final ClientEntityMapper clientEntityMapper;
 
-    @Override
-    public Client create(ClientCreateRequest request) {
-        String email = request.getEmail();
+    public Client create(ClientCreateRequest request, UserEntity userEntity) {
+        String email = userEntity.getEmail();
         if (clientRepository.existsByEmailAndLastNameAndFirstName(email, request.getLastName(),
                                                                   request.getFirstName())) {
             throw new RuntimeException("This client already exists");
         }
-
-        return clientMapper.requestToDomain(request);
+        Client client = clientMapper.requestToDomain(request, userEntity);
+        userEntity.setClient(clientEntityMapper.domainToEntity(client));
+        userService.save(userEntity);
+        return clientRepository.saveClient(client);
     }
+    
+    
 
 
     @Override

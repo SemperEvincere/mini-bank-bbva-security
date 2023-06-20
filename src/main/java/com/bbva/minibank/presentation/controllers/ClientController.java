@@ -2,8 +2,10 @@ package com.bbva.minibank.presentation.controllers;
 
 import com.bbva.minibank.application.usecases.account.IAccountFindUseCase;
 import com.bbva.minibank.application.usecases.client.*;
+import com.bbva.minibank.application.usecases.user.IUserUseCase;
 import com.bbva.minibank.domain.models.Account;
 import com.bbva.minibank.domain.models.Client;
+import com.bbva.minibank.infrastructure.entities.UserEntity;
 import com.bbva.minibank.presentation.mappers.AccountPresentationMapper;
 import com.bbva.minibank.presentation.mappers.ClientPresentationMapper;
 import com.bbva.minibank.presentation.request.client.ClientCreateRequest;
@@ -38,6 +40,7 @@ public class ClientController {
   private final IAccountFindUseCase accountFindUseCase;
   private final IClientUpdateUseCase clientUpdateUseCase;
   private final IClientDeleteUseCase clientDeleteUseCase;
+  private final IUserUseCase userUseCase;
 
   private static ResponseEntity<ErrorResponse> getErrorResponseEntity(BindingResult bindingResult) {
     if (bindingResult.hasErrors()) {
@@ -56,8 +59,11 @@ public class ClientController {
     if (errorResponse != null) {
       return errorResponse;
     }
-
-    Client client = clientCreateUseCase.create(request);
+    UserEntity userEntity = userUseCase.findUserById(request.getUserId());
+    if (userEntity == null) {
+      return ResponseEntity.notFound().build();
+    }
+    Client client = clientCreateUseCase.create(request, userEntity);
     Client savedClient = clientSaveUseCase.save(client);
     ClientResponse response = clientMapper.domainToResponse(savedClient);
     return ResponseEntity.status(HttpStatus.CREATED).body(response);

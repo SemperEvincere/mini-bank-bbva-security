@@ -28,6 +28,7 @@ public class Client {
   private List<UUID> accounts;
   private LocalDate createdAt;
   private LocalDate updatedAt;
+  private UUID userId;
 
   public void addAccount(UUID newAccount) {
     this.accounts.add(newAccount);

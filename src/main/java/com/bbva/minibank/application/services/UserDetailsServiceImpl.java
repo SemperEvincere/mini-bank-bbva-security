@@ -1,7 +1,12 @@
 package com.bbva.minibank.application.services;
 
 import com.bbva.minibank.application.repository.IUserRepository;
+import com.bbva.minibank.application.usecases.user.IUserUseCase;
+import com.bbva.minibank.domain.models.enums.ERole;
+import com.bbva.minibank.infrastructure.entities.RoleEntity;
 import com.bbva.minibank.infrastructure.entities.UserEntity;
+import com.bbva.minibank.presentation.request.user.CreateUserRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -9,9 +14,12 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,6 +27,8 @@ import java.util.stream.Collectors;
 public class UserDetailsServiceImpl implements UserDetailsService {
 	
 	private final IUserRepository userRepository;
+	
+	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		UserEntity userEntity = userRepository.findByUsername(username)
@@ -40,6 +50,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		                true,
 		                authorities);
 	}
+	
 	
 	
 }
